@@ -4,6 +4,6 @@ const statusHTTPMap: Record<string, number> = {
   NOT_FOUND: 404,
 };
   
-export default function mapStatusHTTP(type: string): number {
+export default function HTTPStatus(type: string): number {
   return statusHTTPMap[type];
 }
