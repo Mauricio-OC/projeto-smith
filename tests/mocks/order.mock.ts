@@ -1,6 +1,6 @@
 const orderMockOk = {
-    id: 2,
-    userId: 2,
+    id: 1,
+    userId: 1,
 };
 
 export default { orderMockOk };
