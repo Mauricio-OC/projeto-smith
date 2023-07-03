@@ -1,6 +1,6 @@
 import express from 'express';
 import productRouter from './Routers/products.routers';
-import orderRouter from './Routers/orders.routers'
+import orderRouter from './Routers/orders.routers';
 
 const app = express();
 
