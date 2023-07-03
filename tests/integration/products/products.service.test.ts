@@ -20,4 +20,20 @@ describe('ProductsService', function () {
     expect(serviceResponse.status).to.eq('SUCCESSFUL');
     expect(serviceResponse.data).to.deep.equal(productMock.OKresponse);
   });
+
+  it('should return all products when listing products successfully', async function () {
+    const mockFindAllReturn = [
+      ProductModel.build(productMock.OKresponse),
+      ProductModel.build(productMock.OKresponse),
+    ];
+    sinon.stub(ProductModel, 'findAll').resolves(mockFindAllReturn);
+
+    const serviceResponse = await productService.listProducts();
+
+    expect(serviceResponse.status).to.eq('SUCCESSFUL');
+    expect(serviceResponse.data).to.deep.equal([
+      productMock.OKresponse,
+      productMock.OKresponse,
+    ]);
+  });
 });

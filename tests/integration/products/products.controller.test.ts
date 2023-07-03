@@ -33,4 +33,17 @@ describe('ProductsController', function () {
     expect(res.status).to.have.been.calledWith(201);
     expect(res.json).to.have.been.calledWith(productMock.OKresponse);
   });
+
+  it('should return all products when listing products successfully', async function () {
+    const serviceResponse: ServiceResponse<Product[]> = {
+      status: 'SUCCESSFUL',
+      data: [productMock.OKresponse, productMock.OKresponse],
+    };
+    sinon.stub(productService, 'listProducts').resolves(serviceResponse);
+
+    await productController.listProducts(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith([productMock.OKresponse, productMock.OKresponse]);
+  });
 });

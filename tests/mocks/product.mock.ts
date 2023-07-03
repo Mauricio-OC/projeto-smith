@@ -9,7 +9,7 @@ const productBody = {
  };
 
 const OKresponse = {
-  id: 6,
+  id: 3,
   name: validationName,
   price: validationPrice,
   orderId: validationOrderID,

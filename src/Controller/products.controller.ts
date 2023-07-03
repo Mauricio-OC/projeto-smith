@@ -17,6 +17,16 @@ async function createProduct(req: Request, res: Response): Promise<Response> {
   return res.status(201).json(serviceResponse.data);
 }
 
+async function listProducts(req: Request, res: Response): Promise<Response> {
+  const serviceResponse = await productService.listProducts();
+  if (serviceResponse.status !== 'SUCCESSFUL') {
+    const statusCode = HTTPStatus(serviceResponse.status);
+    return res.status(statusCode).json(serviceResponse.data);
+  }
+  return res.status(200).json(serviceResponse.data);
+}
+
 export default {
   createProduct,
+  listProducts,
 };
