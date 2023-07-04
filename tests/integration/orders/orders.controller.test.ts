@@ -21,7 +21,7 @@ describe('OrdersController', function () {
   });
 
   describe('GET /orders', function () {
-    it('retorna uma lista de pedidos', async function () {
+    it('should return orders list', async function () {
       const serviceResponse: ServiceResponse<OrderSequelizeModel[]> = {
         status: 'SUCCESSFUL',
         data: [orderMockOk] as any,
