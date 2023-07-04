@@ -24,6 +24,9 @@ async function listOrders(): Promise<ServiceResponse<OrderSequelizeModel[]>> {
     status: 'SUCCESSFUL', data: orders };
   return serviceResponse;
 }
+export default {
+  listOrders,
+};
 
 // async function listOrders(): Promise<ServiceResponse<OrderSequelizeModel[]>> {
 //   const orders = await OrderModel.findAll();
@@ -53,7 +56,3 @@ async function listOrders(): Promise<ServiceResponse<OrderSequelizeModel[]>> {
 //     return serviceResponse,
 //   };
 // }
-
-export default {
-  listOrders,
-};

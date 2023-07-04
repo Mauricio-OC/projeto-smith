@@ -1,44 +1,71 @@
-// products.controller.ts
+import { NextFunction, Request, Response } from 'express';
 
-import { Request, Response, NextFunction } from 'express';
-// import { ValidationErrorItemType } from 'sequelize';
-// import ProductService from '../Service/products.services';
-
-const ControllerName = (req: Request, res: Response, next: NextFunction): Response | void => {
-  const { name } = req.body;
-  if (!name) {
-    return res.status(400).json({ message: '"name" is required' });
-  }
-  if (typeof name !== 'string') {
-    return res.status(422).json({ message: '"name" must be a string' });
-  }
-  if (name.length < 3) {
-    return res.status(422).json({ message: '"name" length must be at least 3 characters long' });
-  }
-  next();
+type ValidationResponse = {
+  statusCode: number;
+  message: string;
 };
 
-export default ControllerName;
-// import { NextFunction, Request, Response } from 'express';
-// // import productsServices from '../Service/products.services';
+function isParamRequired(paramName: string, paramValue: string): ValidationResponse | undefined {
+  if (!paramValue) {
+    return {
+      statusCode: 400,
+      message: `"${paramName}" is required`,
+    };
+  }
+}
 
-// const NameValidation = (req: Request, res: Response, next: NextFunction): Response | void => {
-//   const { name } = req.body;
-//   if (!name) {
-//     return res.status(400).json({ message: '"name" is required' });
-//   }
-//   if (typeof name !== 'string') {
-//     return res.status(422).json({ message: '"name" must be a string' });
-//   }
-//   if (typeof name === 'string' && name.length <= 2) {
-//     res.status(422).json({ message: '"name" length must be at least 3 characters long' });
-//   }
-//   next();
-// };
+function isParamString(paramName: string, paramValue: string): ValidationResponse | undefined {
+  if (typeof paramValue !== 'string') {
+    return {
+      statusCode: 422,
+      message: `"${paramName}" must be a string`,
+    };
+  }
+}
 
-// // const PriceValidation = (req: Request, res: Response, Next: NextFunction) => {
+function isParamLengthValid(paramName: string, paramValue: string): ValidationResponse | undefined {
+  if (paramValue.length < 3) {
+    return {
+      statusCode: 422,
+      message: `"${paramName}" length must be at least 3 characters long`,
+    };
+  }
+}
 
-// // };
+function validateParams(param: object): ValidationResponse | void {
+  const paramName = Object.keys(param)[0];
+  const paramValue = Object.values(param)[0];
 
-// export default NameValidation;
-// //   PriceValidation,
+  const requiredValidation = isParamRequired(paramName, paramValue);
+  if (requiredValidation) {
+    return requiredValidation;
+  }
+
+  const stringValidation = isParamString(paramName, paramValue);
+  if (stringValidation) {
+    return stringValidation;
+  }
+
+  const lengthValidation = isParamLengthValid(paramName, paramValue);
+  if (lengthValidation) {
+    return lengthValidation;
+  }
+}
+
+function validateProduct(req: Request, res: Response, next: NextFunction): Response | void {
+  const { name, price } = req.body;
+  const nameValidation = validateParams({ name });
+  const priceValidation = validateParams({ price });
+
+  if (nameValidation) {
+    return res.status(nameValidation.statusCode).json({ message: nameValidation.message });
+  }
+
+  if (priceValidation) {
+    return res.status(priceValidation.statusCode).json({ message: priceValidation.message });
+  }
+
+  next();
+}
+
+export default validateProduct;
